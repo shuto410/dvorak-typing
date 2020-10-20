@@ -1,10 +1,10 @@
 import React from 'react';
-import VirtualKeyboard from './components/Keyboard';
+import TypingGame from './components/TypingGame';
 
 const App: React.FC = () => {
   return (
     <div>
-      <VirtualKeyboard/>
+      <TypingGame/>
     </div>
   );
 }

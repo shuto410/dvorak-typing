@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.simple-keyboard {
+  max-width: 700px;
+  margin: 10px;
+  width: calc(100% - 20px);
+}
