@@ -1,6 +1,8 @@
 import React from 'react';
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
+import { dvorakLayout } from './Layout';
+
 
 const VirtualKeyboard: React.FC = () => {
   const onChange = (input: string) => {
@@ -15,6 +17,8 @@ const VirtualKeyboard: React.FC = () => {
     <Keyboard
       onChange={onChange}
       onKeyPress={onKeyPress}
+      layout={dvorakLayout}
+      physicalKeyboardHighlight={true}
     />
   );
 
