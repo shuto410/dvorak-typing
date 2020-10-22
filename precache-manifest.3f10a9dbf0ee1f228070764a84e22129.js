@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d05efe5a94d6c3557472cbd8fca62e95",
+    "revision": "5ed34b99a177a6bc2f3db55611fcc52f",
     "url": "/dvorak-typing/index.html"
   },
   {
