@@ -16,7 +16,7 @@ const getRandomWord = (words: Array<string>) => {
 type GameState = 'playing' | 'paused' | 'end'
 
 const TypingGame: React.FC = () => {
-  const [currentWord, setCurrentWord] = useState<string>(' Let\'s Dvorak!');
+  const [currentWord, setCurrentWord] = useState<string>(' Let\'s Dvorak! Press Space to start!');
   const [currentPosition, setCurrentPosition] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
   const [missCount, setMissCount] = useState<number>(0);
@@ -71,6 +71,10 @@ const TypingGame: React.FC = () => {
    */
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (gameState === 'paused' || gameState === 'end') {
+      // press space to start
+      if (event.key === '') {
+        initializeGame();
+      }
       return;
     }
     if (event.key === currentWord[currentPosition]) {
