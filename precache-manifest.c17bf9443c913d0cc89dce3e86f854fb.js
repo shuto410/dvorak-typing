@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c6dbb5112751614c045b8ade50489ba1",
+    "revision": "d05efe5a94d6c3557472cbd8fca62e95",
     "url": "/dvorak-typing/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dvorak-typing/static/css/2.d7659245.chunk.css"
   },
   {
-    "revision": "9ef310e916334e826ca1",
-    "url": "/dvorak-typing/static/css/main.7a14a840.chunk.css"
+    "revision": "2cae5035b5034deafe21",
+    "url": "/dvorak-typing/static/css/main.4ed22696.chunk.css"
   },
   {
     "revision": "0780821b2af5d2a1a042",
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dvorak-typing/static/js/2.cef847cf.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "9ef310e916334e826ca1",
-    "url": "/dvorak-typing/static/js/main.2c90da5d.chunk.js"
+    "revision": "2cae5035b5034deafe21",
+    "url": "/dvorak-typing/static/js/main.8a17ea71.chunk.js"
   },
   {
     "revision": "a5d28556af52a8b333d4",
