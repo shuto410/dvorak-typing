@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/dvorak-typing/precache-manifest.4dd2269fc5738f0315fdc428316643f8.js"
+  "/dvorak-typing/precache-manifest.f9eb0000aa720d0fb3ae6a71c3dc3405.js"
 );
 
 self.addEventListener('message', (event) => {

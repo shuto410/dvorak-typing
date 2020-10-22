@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/dvorak-typing/static/css/main.4ed22696.chunk.css",
-    "main.js": "/dvorak-typing/static/js/main.1a3628cd.chunk.js",
-    "main.js.map": "/dvorak-typing/static/js/main.1a3628cd.chunk.js.map",
+    "main.js": "/dvorak-typing/static/js/main.14b89627.chunk.js",
+    "main.js.map": "/dvorak-typing/static/js/main.14b89627.chunk.js.map",
     "runtime-main.js": "/dvorak-typing/static/js/runtime-main.d216f75e.js",
     "runtime-main.js.map": "/dvorak-typing/static/js/runtime-main.d216f75e.js.map",
     "static/css/2.d7659245.chunk.css": "/dvorak-typing/static/css/2.d7659245.chunk.css",
     "static/js/2.cef847cf.chunk.js": "/dvorak-typing/static/js/2.cef847cf.chunk.js",
     "static/js/2.cef847cf.chunk.js.map": "/dvorak-typing/static/js/2.cef847cf.chunk.js.map",
     "index.html": "/dvorak-typing/index.html",
-    "precache-manifest.4dd2269fc5738f0315fdc428316643f8.js": "/dvorak-typing/precache-manifest.4dd2269fc5738f0315fdc428316643f8.js",
+    "precache-manifest.f9eb0000aa720d0fb3ae6a71c3dc3405.js": "/dvorak-typing/precache-manifest.f9eb0000aa720d0fb3ae6a71c3dc3405.js",
     "service-worker.js": "/dvorak-typing/service-worker.js",
     "static/css/2.d7659245.chunk.css.map": "/dvorak-typing/static/css/2.d7659245.chunk.css.map",
     "static/css/main.4ed22696.chunk.css.map": "/dvorak-typing/static/css/main.4ed22696.chunk.css.map",
@@ -20,6 +20,6 @@
     "static/css/2.d7659245.chunk.css",
     "static/js/2.cef847cf.chunk.js",
     "static/css/main.4ed22696.chunk.css",
-    "static/js/main.1a3628cd.chunk.js"
+    "static/js/main.14b89627.chunk.js"
   ]
 }
