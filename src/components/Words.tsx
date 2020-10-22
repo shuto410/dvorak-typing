@@ -1,9 +1,10 @@
 export const words: Array<string> = [
-  'apple',
-  'banana',
-  'car',
-  'door',
-  'event',
-  'floor',
-  'goo',
+  'the',
+  'quick',
+  'brown',
+  'fox',
+  'jumps',
+  'over',
+  'lazy',
+  'dog',
 ];

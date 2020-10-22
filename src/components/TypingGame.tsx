@@ -31,8 +31,8 @@ const TypingGame: React.FC = () => {
    */
   const initializeGame = () => {
     setNewWord();
-    setGameState('playing');
     setTime(timeLimit);
+    setGameState('playing');
     setScore(0);
     setMissCount(0);
   }
