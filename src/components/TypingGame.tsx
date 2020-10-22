@@ -27,24 +27,25 @@ const TypingGame: React.FC = () => {
   const [nextKey, setNextKey] = useState<string>('Space');
 
   /**
+   * get new word and update current word and next key
+   */
+  const setNewWord = useCallback(() => {
+    const nextWord = getRandomWord(words);
+    setCurrentWord(nextWord);
+    setNextKey(nextWord[0]);
+  }, []);
+
+  /**
    * Initialize typing game.
    */
-  const initializeGame = () => {
+  const initializeGame = useCallback(() => {
     setNewWord();
     setTime(timeLimit);
     setGameState('playing');
     setScore(0);
     setMissCount(0);
-  }
+  }, [setNewWord]);
 
-  /**
-   * get new word and update current word and next key
-   */
-  const setNewWord = () => {
-    const nextWord = getRandomWord(words);
-    setCurrentWord(nextWord);
-    setNextKey(nextWord[0]);
-  }
 
   // Count down timer
   useEffect(() => {
@@ -108,7 +109,7 @@ const TypingGame: React.FC = () => {
       setMissCount(missCount+1);
       setScore(score-1);
     }
-  }, [gameState, currentWord, currentPosition, score, missCount]);
+  }, [gameState, currentWord, currentPosition, score, missCount, initializeGame, setNewWord]);
 
   // Register callback for keyboard inputs.
   useEffect(() => {
