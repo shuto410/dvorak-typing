@@ -16,11 +16,12 @@ const getRandomWord = (words: Array<string>) => {
 type GameState = 'playing' | 'paused' | 'end'
 
 const TypingGame: React.FC = () => {
-  const [currentWord, setCurrentWord] = useState<string>(' Let\'s Dvorak!');
+  const [currentWord, setCurrentWord] = useState<string>(' Let\'s Dvorak! Press Space to start!');
   const [currentPosition, setCurrentPosition] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
   const [missCount, setMissCount] = useState<number>(0);
-  const [time, setTime] = useState<number>(30);
+  const timeLimit = 30;
+  const [time, setTime] = useState<number>(timeLimit);
   const [gameState, setGameState] = useState<GameState>('paused');
   const [forceDvorakMode, setForceDvorakMode] = useState<boolean>(false);
 
@@ -30,7 +31,7 @@ const TypingGame: React.FC = () => {
   const initializeGame = () => {
     setCurrentWord(getRandomWord(words));
     setGameState('playing');
-    setTime(30);
+    setTime(timeLimit);
     setScore(0);
     setMissCount(0);
   }
@@ -61,8 +62,8 @@ const TypingGame: React.FC = () => {
 
   useEffect(() => {
     if (gameState === 'end') {
-      window.confirm('Your score: ' + score.toString() + '  Miss: ' + missCount.toString());
-      setCurrentWord(' Game End!');
+      const resultMsg = 'Your score: ' + score.toString() + '  Miss: ' + missCount.toString();
+      setCurrentWord(' Game End! ' + resultMsg);
     }
   }, [gameState, score, missCount])
 
@@ -71,6 +72,10 @@ const TypingGame: React.FC = () => {
    */
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (gameState === 'paused' || gameState === 'end') {
+      // press space to start
+      if (event.code === 'Space') {
+        initializeGame();
+      }
       return;
     }
     if (event.key === currentWord[currentPosition]) {
@@ -111,16 +116,6 @@ const TypingGame: React.FC = () => {
         letterSpacing: '3px',
         height: '100vh'}}
       >
-        <button
-          style={{
-            fontWeight: 'bold',
-            padding: '10px 30px',
-            borderStyle: 'None',
-          }}
-          onClick={initializeGame}
-        >
-          START
-        </button>
         <h2>Time: {time}</h2>
         <h1>{currentWord}</h1>
         <VirtualKeyboard/>
