@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import VirtualKeyboard from './Keyboard';
 import { words } from './Words';
+import Switch from './Switch';
+import { enableForceDvorakMode, disableForceDvorakMode } from '../lib/KeySwitcher';
 
 /**
  * Get a ramdom word.
@@ -20,6 +22,7 @@ const TypingGame: React.FC = () => {
   const [missCount, setMissCount] = useState<number>(0);
   const [time, setTime] = useState<number>(30);
   const [gameState, setGameState] = useState<GameState>('paused');
+  const [forceDvorakMode, setForceDvorakMode] = useState<boolean>(false);
 
   /**
    * Initialize typing game.
@@ -46,6 +49,15 @@ const TypingGame: React.FC = () => {
     }, 1000);
     return () => clearInterval(intervalId);
   }, [time, gameState]);
+
+  // Swithing force dvorak mode
+  useEffect(() => {
+    if (forceDvorakMode) {
+      enableForceDvorakMode()
+    } else {
+      disableForceDvorakMode()
+    }
+  }, [forceDvorakMode])
 
   useEffect(() => {
     if (gameState === 'end') {
@@ -112,6 +124,22 @@ const TypingGame: React.FC = () => {
         <h2>Time: {time}</h2>
         <h1>{currentWord}</h1>
         <VirtualKeyboard/>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
+          height: '40px',
+          width: '350px',
+          fontSize: '16px',
+          letterSpacing: '1px'}}
+        >
+          <Switch
+            isOn={forceDvorakMode}
+            handleToggle={() => setForceDvorakMode(!forceDvorakMode)}
+          />
+          <div>Switch 'qwerty' to 'dvorak'</div>
+        </div>
       </div>
     </div>
   )
