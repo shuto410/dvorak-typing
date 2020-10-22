@@ -73,7 +73,7 @@ const TypingGame: React.FC = () => {
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (gameState === 'paused' || gameState === 'end') {
       // press space to start
-      if (event.key === '') {
+      if (event.code === 'Space') {
         initializeGame();
       }
       return;
