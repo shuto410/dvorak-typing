@@ -24,18 +24,28 @@ const TypingGame: React.FC = () => {
   const [time, setTime] = useState<number>(timeLimit);
   const [gameState, setGameState] = useState<GameState>('paused');
   const [forceDvorakMode, setForceDvorakMode] = useState<boolean>(false);
+  const [nextKey, setNextKey] = useState<string>('Space');
+
+  /**
+   * get new word and update current word and next key
+   */
+  const setNewWord = useCallback(() => {
+    const nextWord = getRandomWord(words);
+    setCurrentWord(nextWord);
+    setNextKey(nextWord[0]);
+  }, []);
 
   /**
    * Initialize typing game.
    */
-  const initializeGame = () => {
-    setCurrentWord(getRandomWord(words));
+  const initializeGame = useCallback(() => {
+    setNewWord();
     setTime(timeLimit);
     setGameState('playing');
     setScore(0);
     setMissCount(0);
     setCurrentPosition(0);
-  }
+  }, [setNewWord]);
 
   // Count down timer
   useEffect(() => {
@@ -87,18 +97,19 @@ const TypingGame: React.FC = () => {
       }
       // After typing a word to the end, set a next word.
       if (nextPosition === currentWord.length) {
-        setCurrentWord(getRandomWord(words));
         setCurrentPosition(0);
+        setNewWord();
         return;
       }
       setScore(score+1);
       setCurrentWord(placeholder + currentWord.substring(nextPosition));
       setCurrentPosition(nextPosition);
+      setNextKey(currentWord[nextPosition]);
     } else {
       setMissCount(missCount+1);
       setScore(score-1);
     }
-  }, [gameState, currentWord, currentPosition, score, missCount]);
+  }, [gameState, currentWord, currentPosition, score, missCount, initializeGame, setNewWord]);
 
   // Register callback for keyboard inputs.
   useEffect(() => {
@@ -119,7 +130,7 @@ const TypingGame: React.FC = () => {
       >
         <h2>Time: {time}</h2>
         <h1>{currentWord}</h1>
-        <VirtualKeyboard/>
+        <VirtualKeyboard nextKey={nextKey}/>
         <div style={{
           display: 'flex',
           flexDirection: 'row',
