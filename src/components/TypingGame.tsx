@@ -44,8 +44,8 @@ const TypingGame: React.FC = () => {
     setGameState('playing');
     setScore(0);
     setMissCount(0);
+    setCurrentPosition(0);
   }, [setNewWord]);
-
 
   // Count down timer
   useEffect(() => {
