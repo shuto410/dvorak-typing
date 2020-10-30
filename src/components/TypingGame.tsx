@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import VirtualKeyboard from './Keyboard';
-import { words } from './Words';
+import { englishWords, japaneseWords, word } from './Words';
 import Switch from './Switch';
 import { enableForceDvorakMode, disableForceDvorakMode } from '../lib/KeySwitcher';
 
@@ -9,7 +9,7 @@ import { enableForceDvorakMode, disableForceDvorakMode } from '../lib/KeySwitche
  * @param words target words to select ramdomly.
  * @return a ramdom selected word.
  */
-const getRandomWord = (words: Array<string>) => {
+const getRandomWord = (words: Array<word>) => {
   return words[Math.floor(Math.random() * words.length)];
 }
 
@@ -17,6 +17,7 @@ type GameState = 'playing' | 'paused' | 'end'
 
 const TypingGame: React.FC = () => {
   const [currentWord, setCurrentWord] = useState<string>(' Let\'s Dvorak! Press Space to start!');
+  const [displayWord, setDisplayWord] = useState<string>('');
   const [currentPosition, setCurrentPosition] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
   const [missCount, setMissCount] = useState<number>(0);
@@ -25,14 +26,17 @@ const TypingGame: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>('paused');
   const [forceDvorakMode, setForceDvorakMode] = useState<boolean>(false);
   const [nextKey, setNextKey] = useState<string>('Space');
+  const [languageMode, setLanguageMode] = useState<string>('Japanese');
 
   /**
    * get new word and update current word and next key
    */
   const setNewWord = useCallback(() => {
+    const words = (languageMode === 'English') ? englishWords : japaneseWords;
     const nextWord = getRandomWord(words);
-    setCurrentWord(nextWord);
-    setNextKey(nextWord[0]);
+    setCurrentWord(nextWord.type);
+    setDisplayWord(nextWord.display);
+    setNextKey(nextWord.type[0]);
   }, []);
 
   /**
@@ -129,6 +133,7 @@ const TypingGame: React.FC = () => {
         height: '100vh'}}
       >
         <h2>Time: {time}</h2>
+        <h1>{displayWord}</h1>
         <h1>{currentWord}</h1>
         <VirtualKeyboard nextKey={nextKey}/>
         <div style={{
