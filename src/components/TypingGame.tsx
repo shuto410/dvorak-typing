@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import VirtualKeyboard from './Keyboard';
 import { words } from './Words';
-import Switch from './Switch';
+import Switch from '@material-ui/core/Switch';
 import { enableForceDvorakMode, disableForceDvorakMode } from '../lib/KeySwitcher';
+import Button from '@material-ui/core/Button';
+import axios from 'axios';
+import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 
 /**
  * Get a ramdom word.
@@ -117,38 +121,70 @@ const TypingGame: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
+  const submitResult = () => {
+    const uname = localStorage.getItem('username');
+    const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/'
+    const rsurl = localStorage.getItem('rankingServerUrl');
+    if (!uname || !rsurl) {
+      window.confirm('Please set username and server url.')
+      setGameState('paused');
+      return;
+    }
+    const params = new URLSearchParams();
+    params.append('name', uname);
+    params.append('score', score.toString());
+    axios
+      .post(CORS_PROXY + rsurl, params)
+      .then(response => {
+        // setGameState('ready'); // まだ'ready'実装ブランチがmergeされていない
+        setGameState('paused');
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+
   return (
-    <div>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent:'center',
-        alignItems:'center',
-        fontFamily:'monospace',
-        letterSpacing: '3px',
-        height: '100vh'}}
+    <Container>
+      <Box
+        display='flex'
+        flexDirection='column'
+        justifyContent='center'
+        alignItems="center"
+        fontFamily='monospace'
+        letterSpacing='3px'
+        height='100vh'
       >
         <h2>Time: {time}</h2>
         <h1>{currentWord}</h1>
+        {gameState === 'end' ? (
+          <Button
+            variant="outlined"
+            size='small'
+            color="primary"
+            onClick={submitResult}
+          >
+            Submit
+          </Button>
+        ) : (
+          <></>
+        )}
         <VirtualKeyboard nextKey={nextKey}/>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          alignItems: 'center',
-          height: '40px',
-          width: '350px',
-          fontSize: '16px',
-          letterSpacing: '1px'}}
+        <Box
+          display='flex'
+          alignItems='center'
+          fontSize='16px'
+          letterSpacing='1px'
         >
           <Switch
-            isOn={forceDvorakMode}
-            handleToggle={() => setForceDvorakMode(!forceDvorakMode)}
+            checked={forceDvorakMode}
+            onChange={() => setForceDvorakMode(!forceDvorakMode)}
+            color='primary'
           />
           <div>Switch 'qwerty' to 'dvorak'</div>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Container>
   )
 }
 
