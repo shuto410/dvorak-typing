@@ -31,12 +31,11 @@ const TypingGame: React.FC = () => {
    * get new word and update current word and next key
    * Update current word and next key to type.
    * @param word: word to set
-   * @param key: next key to type on keyboard
    * @param position: next position of word to type
    */
-  const updateWordToType = (word: string, key: string, position: number) => {
+  const updateWordToType = (word: string, position: number) => {
     setCurrentWord(word);
-    setNextKey(key);
+    setNextKey(word[position]);
     setCurrentPosition(position);
   }
 
@@ -64,7 +63,7 @@ const TypingGame: React.FC = () => {
    */
   const startGame = useCallback(() => {
     const word = getRandomWord(words);
-    updateWordToType(word, word[0], 0);
+    updateWordToType(word, 0);
     setGameState('playing');
   }, []);
 
@@ -140,13 +139,12 @@ const TypingGame: React.FC = () => {
       // When finished typing a word to the end, set the next word.
       if (nextPosition === currentWord.length) {
         const nextWord = getRandomWord(words);
-        updateWordToType(nextWord, nextWord[0], 0);
+        updateWordToType(nextWord, 0);
         return;
       }
       const placeholder = '_'.repeat(nextPosition);
-      const nextWord = placeholder + currentWord.substring(nextPosition)
-      const nextKeyToType = currentWord[nextPosition];
-      updateWordToType(nextWord, nextKeyToType, nextPosition)
+      const nextWord = placeholder + currentWord.substring(nextPosition);
+      updateWordToType(nextWord, nextPosition);
       setScore(score => score+1);
     } else {
       setScore(score => score-1);
