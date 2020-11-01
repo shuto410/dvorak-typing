@@ -111,7 +111,7 @@ const TypingGame: React.FC = () => {
    */
   useEffect(() => {
     if (gameState === 'playing') {
-      ;
+      // do nothing
     } else if (gameState === 'ready') {
       initializeGame();
     } else if (gameState === 'end') {
