@@ -3,6 +3,7 @@ import VirtualKeyboard from './Keyboard';
 import { words } from './Words';
 import Switch from './Switch';
 import { enableForceDvorakMode, disableForceDvorakMode } from '../lib/KeySwitcher';
+import { typingOption, saveForceDvorakModeOption } from '../lib/Options';
 
 /**
  * Get a ramdom word.
@@ -15,7 +16,7 @@ const getRandomWord = (words: Array<string>) => {
 
 type GameState = 'playing' | 'paused' | 'end'
 
-const TypingGame: React.FC = () => {
+const TypingGame: React.FC<{options: typingOption}> = ({options}) => {
   const [currentWord, setCurrentWord] = useState<string>(' Let\'s Dvorak! Press Space to start!');
   const [currentPosition, setCurrentPosition] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
@@ -23,7 +24,7 @@ const TypingGame: React.FC = () => {
   const timeLimit = 30;
   const [time, setTime] = useState<number>(timeLimit);
   const [gameState, setGameState] = useState<GameState>('paused');
-  const [forceDvorakMode, setForceDvorakMode] = useState<boolean>(false);
+  const [forceDvorakMode, setForceDvorakMode] = useState<boolean>(options.forceDvorakMode);
   const [nextKey, setNextKey] = useState<string>('Space');
 
   /**
@@ -64,6 +65,7 @@ const TypingGame: React.FC = () => {
 
   // Swithing force dvorak mode
   useEffect(() => {
+    saveForceDvorakModeOption(forceDvorakMode);
     if (forceDvorakMode) {
       enableForceDvorakMode()
     } else {
