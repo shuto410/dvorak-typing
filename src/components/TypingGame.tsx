@@ -26,7 +26,7 @@ const TypingGame: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>('paused');
   const [forceDvorakMode, setForceDvorakMode] = useState<boolean>(false);
   const [nextKey, setNextKey] = useState<string>('Space');
-  const [languageMode, setLanguageMode] = useState<string>('English');
+  const [languageMode] = useState<string>('English');
 
   /**
    * get new word and update current word and next key
@@ -37,7 +37,7 @@ const TypingGame: React.FC = () => {
     setCurrentWord(nextWord.type);
     setDisplayWord(nextWord.display);
     setNextKey(nextWord.type[0]);
-  }, []);
+  }, [languageMode]);
 
   /**
    * Initialize typing game.
