@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import VirtualKeyboard from './Keyboard';
-import { englishWords, japaneseWords, word } from './Words';
+import { englishWords, japaneseWords, Word } from './Words';
 import Switch from './Switch';
 import { enableForceDvorakMode, disableForceDvorakMode } from '../lib/KeySwitcher';
 
@@ -9,7 +9,7 @@ import { enableForceDvorakMode, disableForceDvorakMode } from '../lib/KeySwitche
  * @param words target words to select ramdomly.
  * @return a ramdom selected word.
  */
-const getRandomWord = (words: Array<word>) => {
+const getRandomWord = (words: Array<Word>) => {
   return words[Math.floor(Math.random() * words.length)];
 }
 
@@ -34,9 +34,9 @@ const TypingGame: React.FC = () => {
   const setNewWord = useCallback(() => {
     const words = (languageMode === 'English') ? englishWords : japaneseWords;
     const nextWord = getRandomWord(words);
-    setCurrentWord(nextWord.type);
-    setDisplayWord(nextWord.display);
-    setNextKey(nextWord.type[0]);
+    setCurrentWord(nextWord.letter);
+    setDisplayWord(nextWord.label);
+    setNextKey(nextWord.letter[0]);
   }, [languageMode]);
 
   /**
