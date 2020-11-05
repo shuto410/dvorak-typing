@@ -13,7 +13,7 @@ const getRandomWord = (words: Array<string>) => {
   return words[Math.floor(Math.random() * words.length)];
 }
 
-type GameState = 'ready' | 'playing' | 'end' | 'restart' ;
+type GameState = 'ready' | 'playing' | 'end';
 
 const TypingGame: React.FC = () => {
   const initialMessage = ' Let\'s Dvorak! Press Space to start!';
@@ -48,7 +48,7 @@ const TypingGame: React.FC = () => {
    *   - currentWord: => Initial message.
    *   - nextKey => empty
    */
-  const initializeGame = useCallback(() => {
+  const initializeGame = () => {
     setTime(timeLimit);
     setScore(0);
     setMissCount(0);
@@ -56,7 +56,7 @@ const TypingGame: React.FC = () => {
     // Set the key that doesn't exist
     // to avoid warning that ocuur when tyring to set empty string.
     setNextKey('NoneKey');
-  }, []);
+  };
 
   /**
    * Start typing game.
@@ -111,16 +111,17 @@ const TypingGame: React.FC = () => {
    */
   useEffect(() => {
     if (gameState === 'playing') {
-      // do nothing
+      initializeGame();
+      startGame();
     } else if (gameState === 'ready') {
       initializeGame();
     } else if (gameState === 'end') {
       finishGame();
-    } else if (gameState === 'restart') {
-      initializeGame();
-      startGame();
     }
-  }, [gameState, initializeGame, finishGame, startGame])
+    // finishGameがstate(score, missCount)に依存しており、
+    // 文字を打つたびに更新されてしまうためdependenciesから除外
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameState])
 
   /**
    * handler used when game is 'playing'
@@ -161,7 +162,7 @@ const TypingGame: React.FC = () => {
    */
   const handleKeyDownOnNotPlaying = useCallback((event: KeyboardEvent) => {
     if (event.code === 'Space') {
-      setGameState('restart');
+      setGameState('playing');
     } else if (event.code === 'Escape') {
       setGameState('ready');
     }
