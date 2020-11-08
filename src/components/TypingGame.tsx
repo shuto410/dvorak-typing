@@ -56,25 +56,30 @@ const TypingGame: React.FC = () => {
     // Set the key that doesn't exist
     // to avoid warning that ocuur when tyring to set empty string.
     setNextKey('NoneKey');
+    setGameState('ready');
   };
 
   /**
    * Start typing game.
    */
-  const startGame = useCallback(() => {
-    const word = getRandomWord(words);
-    updateWordToType(word, 0);
+  const startGame = () => {
+    const setFirstWord = () => {
+      const word = getRandomWord(words);
+      setCurrentWord(word);
+      setNextKey(word[0]);
+      setCurrentPosition(0);
+    };
+    setFirstWord();
     setGameState('playing');
-  }, []);
+  };
 
   /**
-   * Finish game and show results.
+   * Finish game.
    */
-  const finishGame = useCallback(() => {
-    const resultMsg = 'Your score: ' + score.toString() + '  Miss: ' + missCount.toString();
-    setCurrentWord(' Game End! ' + resultMsg);
+  const finishGame = () => {
     setNextKey('NoneKey');
-  }, [score, missCount]);
+    setGameState('end');
+  };
 
   /**
    * Count down timer.
@@ -86,7 +91,7 @@ const TypingGame: React.FC = () => {
       return;
     }
     if (!time) {
-      setGameState('end');
+      finishGame();
       return;
     }
     const intervalId = setInterval(() => {
@@ -107,32 +112,15 @@ const TypingGame: React.FC = () => {
   }, [forceDvorakMode])
 
   /**
-   * Manage the progress of the game.
-   */
-  useEffect(() => {
-    if (gameState === 'playing') {
-      initializeGame();
-      startGame();
-    } else if (gameState === 'ready') {
-      initializeGame();
-    } else if (gameState === 'end') {
-      finishGame();
-    }
-    // finishGameがstate(score, missCount)に依存しており、
-    // 文字を打つたびに更新されてしまうためdependenciesから除外
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameState])
-
-  /**
    * handler used when game is 'playing'
    *
    * Special key:
-   *   - Esc: stop the game and return to the beggining.
+   *   - Esc: reset game
    */
   const handleKeyDownOnPlaying = useCallback((event: KeyboardEvent) => {
     // Press escape key to stop the game and return to the beggining.
     if (event.code === 'Escape') {
-      setGameState('ready');
+      initializeGame();
       return;
     }
     if (event.key === currentWord[currentPosition]) {
@@ -157,14 +145,15 @@ const TypingGame: React.FC = () => {
    * handler used when game is not 'playing'
    *
    * Special key:
-   *   - Space: restart the game
-   *   - Esc: stop the game and return to the beggining.
+   *   - Space: rest and start game
+   *   - Esc: reset game
    */
   const handleKeyDownOnNotPlaying = useCallback((event: KeyboardEvent) => {
     if (event.code === 'Space') {
-      setGameState('playing');
+      initializeGame();
+      startGame();
     } else if (event.code === 'Escape') {
-      setGameState('ready');
+      initializeGame();
     }
   }, []);
 
@@ -194,7 +183,11 @@ const TypingGame: React.FC = () => {
         height: '100vh'}}
       >
         <h2>Time: {time}</h2>
-        <h1>{currentWord}</h1>
+        {gameState === 'end' ? (
+          <h1>Your score: {score}  Miss: {missCount}</h1>
+        ) : (
+          <h1>{currentWord}</h1>
+        )}
         <VirtualKeyboard nextKey={nextKey}/>
         <div style={{
           display: 'flex',
