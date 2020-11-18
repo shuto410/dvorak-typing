@@ -17,7 +17,7 @@ type GameState = 'playing' | 'paused' | 'end'
 
 const TypingGame: React.FC = () => {
   const [currentWord, setCurrentWord] = useState<string>(' Let\'s Dvorak! Press Space to start!');
-  const [displayWord, setDisplayWord] = useState<string>('');
+  const [currentWordLabel, setCurrentWordLabel] = useState<string>('');
   const [currentPosition, setCurrentPosition] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
   const [missCount, setMissCount] = useState<number>(0);
@@ -26,7 +26,7 @@ const TypingGame: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>('paused');
   const [forceDvorakMode, setForceDvorakMode] = useState<boolean>(false);
   const [nextKey, setNextKey] = useState<string>('Space');
-  const [languageMode] = useState<string>('English');
+  const [languageMode] = useState<string>('Japanese');
 
   /**
    * get new word and update current word and next key
@@ -35,7 +35,7 @@ const TypingGame: React.FC = () => {
     const words = (languageMode === 'English') ? englishWords : japaneseWords;
     const nextWord = getRandomWord(words);
     setCurrentWord(nextWord.letter);
-    setDisplayWord(nextWord.label);
+    setCurrentWordLabel(nextWord.label);
     setNextKey(nextWord.letter[0]);
   }, [languageMode]);
 
@@ -133,7 +133,7 @@ const TypingGame: React.FC = () => {
         height: '100vh'}}
       >
         <h2>Time: {time}</h2>
-        <h1 style={{margin: '50px 0px 0px 0px'}}>{displayWord}</h1>
+        <h1 style={{margin: '50px 0px 0px 0px'}}>{currentWordLabel}</h1>
         <h1>{currentWord}</h1>
         <VirtualKeyboard nextKey={nextKey}/>
         <div style={{
