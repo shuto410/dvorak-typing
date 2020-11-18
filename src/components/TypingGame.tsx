@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import VirtualKeyboard from './Keyboard';
-import { words } from './Words';
+import { englishWords, japaneseWords, Word } from './Words';
 import Switch from './Switch';
 import { enableForceDvorakMode, disableForceDvorakMode } from '../lib/KeySwitcher';
 import { typingOption, saveForceDvorakModeOption } from '../lib/Options';
@@ -10,7 +10,7 @@ import { typingOption, saveForceDvorakModeOption } from '../lib/Options';
  * @param words target words to select ramdomly.
  * @return a ramdom selected word.
  */
-const getRandomWord = (words: Array<string>) => {
+const getRandomWord = (words: Array<Word>) => {
   return words[Math.floor(Math.random() * words.length)];
 }
 
@@ -18,6 +18,7 @@ type GameState = 'playing' | 'paused' | 'end'
 
 const TypingGame: React.FC<{options: typingOption}> = ({options}) => {
   const [currentWord, setCurrentWord] = useState<string>(' Let\'s Dvorak! Press Space to start!');
+  const [currentWordLabel, setCurrentWordLabel] = useState<string>('');
   const [currentPosition, setCurrentPosition] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
   const [missCount, setMissCount] = useState<number>(0);
@@ -26,15 +27,18 @@ const TypingGame: React.FC<{options: typingOption}> = ({options}) => {
   const [gameState, setGameState] = useState<GameState>('paused');
   const [forceDvorakMode, setForceDvorakMode] = useState<boolean>(options.forceDvorakMode);
   const [nextKey, setNextKey] = useState<string>('Space');
+  const [languageMode] = useState<string>('Japanese');
 
   /**
    * get new word and update current word and next key
    */
   const setNewWord = useCallback(() => {
+    const words = (languageMode === 'English') ? englishWords : japaneseWords;
     const nextWord = getRandomWord(words);
-    setCurrentWord(nextWord);
-    setNextKey(nextWord[0]);
-  }, []);
+    setCurrentWord(nextWord.letter);
+    setCurrentWordLabel(nextWord.label);
+    setNextKey(nextWord.letter[0]);
+  }, [languageMode]);
 
   /**
    * Initialize typing game.
@@ -131,6 +135,7 @@ const TypingGame: React.FC<{options: typingOption}> = ({options}) => {
         height: '100vh'}}
       >
         <h2>Time: {time}</h2>
+        <h1 style={{margin: '50px 0px 0px 0px'}}>{currentWordLabel}</h1>
         <h1>{currentWord}</h1>
         <VirtualKeyboard nextKey={nextKey}/>
         <div style={{
