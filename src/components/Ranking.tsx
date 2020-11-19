@@ -7,12 +7,12 @@ import {
   TableContainer,
   TableCell,
   TableRow,
-  Button,
   CircularProgress,
   Container,
   Paper,
+  Box,
 } from '@material-ui/core';
-import RefreshIcon from '@material-ui/icons/Refresh';
+import Alert from '@material-ui/lab/Alert';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 
@@ -92,29 +92,12 @@ const ScoreBoard: React.FC<{data: Array<ScoreData>}> = ({data}) => {
   )
 }
 
-const ReloadButton: React.FC<{onClick: () => void}> = ({onClick}) => {
-  return (
-    <Button
-      variant='outlined'
-      size='small'
-      color="primary"
-      startIcon={<RefreshIcon/>}
-      onClick={onClick}
-    >
-      Reload
-    </Button>
-  )
-}
 
 const Ranking: React.FC = () => {
   const [data, setData] = useState<Array<ScoreData>>([]);
   const [loading, setLoading] = useState(false);
   const [url, setUrl] = useState('')
-  const [errMsg, setErrMsg] = useState('');
-
-  const startLoading = () => {
-    setLoading(true);
-  }
+  const [err, setErr] = useState(false);
 
   /**
    * localStorageからurlを読み出し、urlが空でなければfetch処理をtrigger
@@ -151,30 +134,42 @@ const Ranking: React.FC = () => {
         if (isMounted) {
           setData([...uniqueScores]);
           setLoading(false);
-          setErrMsg('');
+          setErr(false);
         }
       })
       .catch(error => {
-        setErrMsg('Error! Please confirm setting.');
+        setErr(true);
         setLoading(false);
       })
     return () => { isMounted = false };
-  }, [url]);
+  }, [url, loading]);
 
   return (
     <Container maxWidth='md'>
-      <h1>Ranking</h1>
-      {url ? (
-        <ReloadButton onClick={startLoading} />
-      ) : (
-        <h3>Please set score-board endpoint from setting.</h3>
-      )}
-      <h2>{errMsg}</h2>
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <ScoreBoard data={data} />
-      )}
+      <Box
+        display='flex'
+        flexDirection='column'
+        height='100vh'
+      >
+        <h1>Ranking</h1>
+        {url ? (
+          <></>
+        ) : (
+          <Box>
+            <Alert severity='info'>Please set score-board endpoint from setting.</Alert>
+          </Box>
+        )}
+        {err ? (
+          <Alert severity='error'>Please confirm setting.</Alert>
+        ) : (
+          <></>
+        )}
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <ScoreBoard data={data} />
+        )}
+      </Box>
     </Container>
   )
 }
